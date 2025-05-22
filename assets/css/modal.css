@@ -1,0 +1,401 @@
+/* Modal Styles */
+
+/* Modal Container */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+/* Modal Container */
+.modal-container {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    z-index: 1001;
+    transform: translateY(20px);
+    transition: transform var(--transition-normal);
+}
+
+.modal.active .modal-container {
+    transform: translateY(0);
+}
+
+.modal-container.modal-sm {
+    max-width: 400px;
+}
+
+.modal-container.modal-lg {
+    max-width: 800px;
+}
+
+.modal-container.modal-xl {
+    max-width: 1000px;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+/* Modal Close Button */
+.modal-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    color: var(--text-secondary);
+    z-index: 1002;
+    transition: background-color var(--transition-fast);
+}
+
+.modal-close:hover {
+    background-color: var(--divider-color);
+    color: var(--text-primary);
+}
+
+/* Modal Header */
+.modal-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--divider-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+/* Invoice View */
+.invoice-view {
+    padding: var(--spacing-lg);
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+}
+
+.invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.invoice-logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.invoice-logo h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.invoice-info h1 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.invoice-client {
+    margin-bottom: var(--spacing-xl);
+}
+
+.invoice-client h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+}
+
+.invoice-items {
+    margin-bottom: var(--spacing-xl);
+}
+
+.invoice-items h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.invoice-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.invoice-items th,
+.invoice-items td {
+    padding: var(--spacing-sm);
+    text-align: left;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.invoice-items th {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.invoice-totals {
+    margin-bottom: var(--spacing-xl);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+}
+
+.total-row.total-final {
+    font-weight: 600;
+    font-size: 1.125rem;
+    border-top: 1px solid var(--divider-color);
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+}
+
+.invoice-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 400px;
+    animation: slide-in 0.3s ease;
+}
+
+.notification.fade-out {
+    animation: slide-out 0.3s ease forwards;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.notification-content i {
+    font-size: 1.25rem;
+}
+
+.notification.success i {
+    color: var(--success-color);
+}
+
+.notification.error i {
+    color: var(--error-color);
+}
+
+.notification.info i {
+    color: var(--info-color);
+}
+
+.notification.warning i {
+    color: var(--warning-color);
+}
+
+.notification-close {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    color: var(--text-secondary);
+    transition: background-color var(--transition-fast);
+}
+
+.notification-close:hover {
+    background-color: var(--divider-color);
+    color: var(--text-primary);
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Confirmation Dialog */
+.confirmation-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.confirmation-dialog.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirmation-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+.confirmation-container {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    z-index: 1001;
+    transform: translateY(20px);
+    transition: transform var(--transition-normal);
+}
+
+.confirmation-dialog.active .confirmation-container {
+    transform: translateY(0);
+}
+
+.confirmation-content {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xl);
+    text-align: center;
+}
+
+.confirmation-icon {
+    font-size: 3rem;
+    color: var(--warning-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.confirmation-message {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xl);
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-container {
+        width: 95%;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: var(--spacing-md);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer button {
+        width: 100%;
+    }
+    
+    .notification {
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+        left: var(--spacing-md);
+        max-width: none;
+    }
+}

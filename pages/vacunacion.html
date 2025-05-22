@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HENSYS - Vacunación</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/forms.css">
+    <link rel="stylesheet" href="../assets/css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (incluido desde components) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../assets/img/logo.png" alt="HENSYS Logo">
+                    <h1>HENSYS</h1>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" title="Abrir/cerrar menú lateral">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <a href="../index.html" class="menu-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="clientes.html" class="menu-item">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                    </a>
+                    <a href="galpones.html" class="menu-item">
+                        <i class="fas fa-warehouse"></i>
+                        <span>Galpones</span>
+                    </a>
+                    <a href="animal.html" class="menu-item">
+                        <i class="fas fa-paw"></i>
+                        <span>Animal</span>
+                    </a>
+                    <a href="alimentacion.html" class="menu-item">
+                        <i class="fas fa-drumstick-bite"></i>
+                        <span>Alimentación</span>
+                    </a>
+                    <a href="vacunacion.html" class="menu-item active">
+                        <i class="fas fa-syringe"></i>
+                        <span>Vacunación</span>
+                    </a>
+                    <a href="produccion.html" class="menu-item">
+                        <i class="fas fa-box"></i>
+                        <span>Producción</span>
+                    </a>
+                    <a href="gastos.html" class="menu-item">
+                        <i class="fas fa-receipt"></i>
+                        <span>Gastos</span>
+                    </a>
+                    <a href="facturacion.html" class="menu-item">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>Facturación</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="../assets/img/user-avatar.png" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <h3>Admin</h3>
+                        <p>Administrador</p>
+                    </div>
+                </div>
+                <button class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Vacunación</h1>
+                    <p class="breadcrumb">Inicio / Vacunación</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Buscar..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-icon" title="Notificaciones">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">3</span>
+                        </button>
+                        <button class="btn-icon" title="Configuración">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-container">
+                <!-- Calendario de vacunación -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Calendario de Vacunación</h2>
+                        <div class="card-actions">
+                            <button class="btn btn-outline">
+                                <i class="fas fa-calendar-alt"></i> Ver Mes
+                            </button>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-calendar-week"></i> Ver Semana
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="calendar-container" id="vaccinationCalendar">
+                            <!-- El calendario se cargará dinámicamente -->
+                            <div class="calendar-placeholder">
+                                <p>Calendario en desarrollo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Próximas vacunaciones -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Próximas Vacunaciones</h2>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" id="newVaccinationButton">
+                                <i class="fas fa-plus"></i> Nueva Vacunación
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="upcoming-list" id="upcomingVaccinations">
+                            <!-- Las vacunaciones se cargarán dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historial de vacunación -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Historial de Vacunación</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="vaccinationHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Vacuna</th>
+                                        <th>Galpón</th>
+                                        <th>Cantidad de Aves</th>
+                                        <th>Fecha</th>
+                                        <th>Responsable</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Los datos se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de vacunación -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Registrar Vacunación</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="addVaccinationForm" class="form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vaccinationType">Tipo de Vacuna:</label>
+                                    <select id="vaccinationType" class="form-select" required>
+                                        <option value="">Seleccione una vacuna</option>
+                                        <option value="Newcastle">Newcastle</option>
+                                        <option value="Bronquitis">Bronquitis</option>
+                                        <option value="Marek">Marek</option>
+                                        <option value="Gumboro">Gumboro</option>
+                                        <option value="Viruela">Viruela</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinationCoop">Galpón:</label>
+                                    <select id="vaccinationCoop" class="form-select" required>
+                                        <option value="">Seleccione un galpón</option>
+                                        <option value="1">Galpón 1</option>
+                                        <option value="2">Galpón 2</option>
+                                        <option value="3">Galpón 3</option>
+                                        <option value="4">Galpón 4</option>
+                                        <option value="5">Galpón 5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinationBirds">Cantidad de Aves:</label>
+                                    <input type="number" id="vaccinationBirds" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinationDate">Fecha:</label>
+                                    <input type="date" id="vaccinationDate" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinationResponsible">Responsable:</label>
+                                    <input type="text" id="vaccinationResponsible" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinationNotes">Observaciones:</label>
+                                    <textarea id="vaccinationNotes" class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-outline">Limpiar</button>
+                                <button type="submit" class="btn btn-primary">Registrar Vacunación</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/utils/data.js"></script>
+    <script src="../assets/js/utils/helpers.js"></script>
+    <script src="../assets/js/modules/vacunacion.js"></script>
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>
