@@ -1,0 +1,54 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Node.js (si en el futuro usas npm para dependencias o bundlers como Vite o Webpack)
+node_modules/
+dist/
+build/
+
+# Live Server (en algunos casos crea temporales)
+.vscode/live*
+
+# Archivos de entorno o configuración local
+.env
+.env.local
+*.local
+
+# Archivos de logs o caché
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.cache/
+.temp/
+
+# Archivos generados por editores
+*.swp
+*.swo
+*.tmp
+*.bak
+*.old
+
+# VSCode settings (opcionales)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/*.code-workspace
+
+# Archivos temporales de sistema o de usuario
+~$*
+*.bak
+*.tmp
+
+# Imágenes o recursos grandes que no quieres en Git (opcional)
+# assets/img/*.psd
+# assets/img/*.ai
+
+# Archivos PDF de documentación o mock data (opcional)
+*.pdf
+
+# Archivos ZIP o exportados
+*.zip
+*.rar
