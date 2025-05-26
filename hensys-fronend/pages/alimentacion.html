@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Alimentación</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Alimentación</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Alimentación</p>
+
+      <div class="dashboard-content">
+        <!-- Resumen de alimentación -->
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-drumstick-bite"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Consumo Total</h3>
+              <p class="stat-value">2,450 kg</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 5.2%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-warehouse"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Galpones Alimentados</h3>
+              <p class="stat-value">8/8</p>
+              <p class="stat-change neutral">
+                <i class="fas fa-equals"></i> 0%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-weight"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Promedio por Ave</h3>
+              <p class="stat-value">120 g</p>
+              <p class="stat-change negative">
+                <i class="fas fa-arrow-down"></i> 2.1%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Stock Disponible</h3>
+              <p class="stat-value">1,850 kg</p>
+              <p class="stat-change negative">
+                <i class="fas fa-arrow-down"></i> 15.3%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros y acciones -->
+        <div class="filters-container">
+          <div class="filters">
+            <div class="filter-group">
+              <label for="feedingFilter">Filtrar por tipo:</label>
+              <select id="feedingFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="Concentrado">Concentrado</option>
+                <option value="Maíz">Maíz</option>
+                <option value="Mixto">Mixto</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="feedingDateFilter">Fecha:</label>
+              <input type="date" id="feedingDateFilter" class="form-input" />
+            </div>
+            <div class="filter-group">
+              <label for="feedingCoopFilter">Galpón:</label>
+              <select id="feedingCoopFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="1">Galpón 1</option>
+                <option value="2">Galpón 2</option>
+                <option value="3">Galpón 3</option>
+                <option value="4">Galpón 4</option>
+                <option value="5">Galpón 5</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-outline" id="filterFeedingButton">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <button class="btn btn-outline" id="exportFeedingButton">
+              <i class="fas fa-file-export"></i> Exportar
+            </button>
+            <button class="btn btn-primary" id="newFeedingButton">
+              <i class="fas fa-plus"></i> Nuevo Registro
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de alimentación -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registro de Alimentación</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="feedingTable">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Galpón</th>
+                    <th>Tipo</th>
+                    <th>Cantidad (kg)</th>
+                    <th>Responsable</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Datos dinámicos -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registrar Alimentación</h2>
+          </div>
+          <div class="card-body">
+            <form id="addFeedingForm" class="form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="feedingDate">Fecha:</label>
+                  <input type="date" id="feedingDate" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="feedingCoop">Galpón:</label>
+                  <select id="feedingCoop" class="form-select" required>
+                    <option value="">Seleccione un galpón</option>
+                    <option value="1">Galpón 1</option>
+                    <option value="2">Galpón 2</option>
+                    <option value="3">Galpón 3</option>
+                    <option value="4">Galpón 4</option>
+                    <option value="5">Galpón 5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="feedingType">Tipo de Alimento:</label>
+                  <select id="feedingType" class="form-select" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="Concentrado">Concentrado</option>
+                    <option value="Maíz">Maíz</option>
+                    <option value="Mixto">Mixto</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="feedingQuantity">Cantidad (kg):</label>
+                  <input type="number" id="feedingQuantity" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="feedingResponsible">Responsable:</label>
+                  <input type="text" id="feedingResponsible" class="form-input" required />
+                </div>
+                <div class="form-group span-2">
+                  <label for="feedingNotes">Observaciones:</label>
+                  <textarea id="feedingNotes" class="form-textarea"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Limpiar</button>
+                <button type="submit" class="btn btn-primary">Registrar Alimentación</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Inventario de alimentos -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Inventario de Alimentos</h2>
+            <div class="card-actions">
+              <button class="btn btn-primary" id="addStockButton">
+                <i class="fas fa-plus"></i> Agregar Stock
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="stockTable">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Cantidad Disponible (kg)</th>
+                    <th>Fecha de Compra</th>
+                    <th>Fecha de Vencimiento</th>
+                    <th>Proveedor</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Datos dinámicos -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/validation.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/alimentacion.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

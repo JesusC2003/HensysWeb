@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Clientes</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Clientes</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Clientes</p>
+
+      <div class="dashboard-content">
+        <!-- Filtros y acciones -->
+        <div class="filters-container">
+          <div class="filters">
+            <div class="filter-group">
+              <label for="clientSearch">Buscar cliente:</label>
+              <input type="text" id="clientSearch" class="form-input" placeholder="Nombre o teléfono" />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-outline" id="filterClientsButton">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <button class="btn btn-outline" id="exportClientsButton">
+              <i class="fas fa-file-export"></i> Exportar
+            </button>
+            <button class="btn btn-primary" id="newClientButton">
+              <i class="fas fa-plus"></i> Nuevo Cliente
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de clientes -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Listado de Clientes</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="clientsTable">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de cliente -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registrar Cliente</h2>
+          </div>
+          <div class="card-body">
+            <form id="addClientForm" class="form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="clientName">Nombre:</label>
+                  <input type="text" id="clientName" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="clientPhone">Teléfono:</label>
+                  <input type="tel" id="clientPhone" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="clientEmail">Email:</label>
+                  <input type="email" id="clientEmail" class="form-input" />
+                </div>
+                <div class="form-group span-2">
+                  <label for="clientAddress">Dirección:</label>
+                  <input type="text" id="clientAddress" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="clientType">Tipo de Cliente:</label>
+                  <select id="clientType" class="form-select">
+                    <option value="individual">Individual</option>
+                    <option value="business">Empresa</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="clientNotes">Notas:</label>
+                  <textarea id="clientNotes" class="form-textarea"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Limpiar</button>
+                <button type="submit" class="btn btn-primary">Registrar Cliente</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/clientes.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

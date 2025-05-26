@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Galpones</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Galpones</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Galpones</p>
+
+      <div class="dashboard-content">
+        <!-- Resumen de galpones -->
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-warehouse"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Total Galpones</h3>
+              <p class="stat-value">8</p>
+              <p class="stat-change neutral">
+                <i class="fas fa-equals"></i> 0%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-thermometer-half"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Temperatura Promedio</h3>
+              <p class="stat-value">24.5°C</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 1.2°C
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Humedad Promedio</h3>
+              <p class="stat-value">65%</p>
+              <p class="stat-change negative">
+                <i class="fas fa-arrow-down"></i> 3%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Ocupación</h3>
+              <p class="stat-value">89%</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 2.5%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros y acciones -->
+        <div class="filters-container">
+          <div class="filters">
+            <div class="filter-group">
+              <label for="coopTypeFilter">Filtrar por tipo:</label>
+              <select id="coopTypeFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="Ponedoras">Ponedoras</option>
+                <option value="Engorde">Engorde</option>
+                <option value="Reproductoras">Reproductoras</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="coopStatusFilter">Estado:</label>
+              <select id="coopStatusFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="Activo">Activo</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-outline" id="filterCoopsButton">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <button class="btn btn-primary" id="newCoopButton">
+              <i class="fas fa-plus"></i> Nuevo Galpón
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjetas de galpones -->
+        <div class="coop-cards" id="coopCards">
+          <!-- Las tarjetas se cargarán dinámicamente -->
+        </div>
+
+        <!-- Tabla de galpones -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Listado de Galpones</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="coopsTable">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Tipo</th>
+                    <th>Capacidad</th>
+                    <th>Ocupación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de galpón -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registrar Galpón</h2>
+          </div>
+          <div class="card-body">
+            <form id="addCoopForm" class="form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="coopNumber">Número:</label>
+                  <input type="number" id="coopNumber" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="coopType">Tipo:</label>
+                  <select id="coopType" class="form-select" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="Ponedoras">Ponedoras</option>
+                    <option value="Engorde">Engorde</option>
+                    <option value="Reproductoras">Reproductoras</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="coopCapacity">Capacidad:</label>
+                  <input type="number" id="coopCapacity" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="coopStatus">Estado:</label>
+                  <select id="coopStatus" class="form-select" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Inactivo">Inactivo</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="coopDimensions">Dimensiones (m²):</label>
+                  <input type="number" id="coopDimensions" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="coopLocation">Ubicación:</label>
+                  <input type="text" id="coopLocation" class="form-input" />
+                </div>
+                <div class="form-group span-2">
+                  <label for="coopNotes">Observaciones:</label>
+                  <textarea id="coopNotes" class="form-textarea"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Limpiar</button>
+                <button type="submit" class="btn btn-primary">Registrar Galpón</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/validation.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/galpones.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

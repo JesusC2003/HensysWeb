@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Facturación</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/modal.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Facturación</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Facturación</p>
+
+      <div class="dashboard-content">
+        <!-- Filtros y acciones -->
+        <div class="filters-container">
+          <div class="filters">
+            <div class="filter-group">
+              <label for="clientFilter">Cliente:</label>
+              <input type="text" id="clientFilter" class="form-input" placeholder="Nombre del cliente" />
+            </div>
+            <div class="filter-group">
+              <label for="dateFilter">Fecha:</label>
+              <input type="date" id="dateFilter" class="form-input" />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-outline" id="filterButton">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <button class="btn btn-outline" id="exportButton">
+              <i class="fas fa-file-export"></i> Exportar
+            </button>
+            <button class="btn btn-primary" id="newInvoiceButton">
+              <i class="fas fa-plus"></i> Nueva Factura
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de facturas -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Facturas</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="invoicesTable">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Modal Nueva Factura -->
+  <div class="modal" id="invoiceModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container modal-lg">
+      <div class="modal-content">
+        <button class="modal-close" aria-label="Cerrar modal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+          <h2>Nueva Factura</h2>
+        </div>
+        <div class="modal-body">
+          <form id="invoiceForm" class="form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="invoiceClient">Cliente:</label>
+                <select id="invoiceClient" class="form-select" required>
+                  <option value="">Seleccione un cliente</option>
+                  <option value="1">José Pérez</option>
+                  <option value="2">Restaurante El Gallo</option>
+                  <option value="3">Granja Vecina</option>
+                  <option value="4">Supermercado Local</option>
+                  <option value="5">Hotel Campestre</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="invoiceDate">Fecha:</label>
+                <input type="date" id="invoiceDate" class="form-input" required />
+              </div>
+            </div>
+
+            <div class="card mt-4">
+              <div class="card-header">
+                <h3>Agregar Productos</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="invoiceProduct">Producto:</label>
+                    <select id="invoiceProduct" class="form-select">
+                      <option value="">Seleccione un producto</option>
+                      <option value="1">Huevos (docena)</option>
+                      <option value="2">Pollo entero</option>
+                      <option value="3">Carne de pollo (kg)</option>
+                      <option value="4">Gallina ponedora</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="invoiceQuantity">Cantidad:</label>
+                    <input type="number" id="invoiceQuantity" class="form-input" min="1" />
+                  </div>
+                  <div class="form-group">
+                    <label for="invoicePrice">Precio Unitario:</label>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <input type="number" id="invoicePrice" class="form-input" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button type="button" id="addInvoiceItemButton" class="btn btn-secondary">
+                      <i class="fas fa-plus"></i> Agregar Producto
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive mt-3">
+                  <table class="table" id="invoiceItemsTable">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="text-center">No hay productos agregados</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="invoice-totals mt-4">
+              <div class="total-row">
+                <span>Subtotal:</span>
+                <span id="invoiceSubtotal">$0</span>
+              </div>
+              <div class="total-row">
+                <span>IVA (19%):</span>
+                <span id="invoiceTax">$0</span>
+              </div>
+              <div class="total-row total-final">
+                <span>Total:</span>
+                <span id="invoiceTotal">$0</span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline modal-close">Cancelar</button>
+          <button class="btn btn-primary" id="saveInvoiceButton">Guardar Factura</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ver Factura -->
+  <div class="modal" id="viewInvoiceModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container modal-lg">
+      <div class="modal-content">
+        <!-- El contenido se cargará dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/facturacion.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HENSYS - Sistema de Gestión Avícola</title>
+    <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css">
+    <link rel="stylesheet" href="/hensys-fronend/assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div id="header"></div>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+       <div id="sidebar"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">           
+
+            <h1 id="pageTitle">Dashboard</h1>
+            <p class="breadcrumb" id="pageBreadcrumb">Inicio / Dashboard</p>
+
+            <div class="dashboard-content">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-egg"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Producción Total</h3>
+                            <p class="stat-value">1,250</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 12.5%
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ingresos</h3>
+                            <p class="stat-value">$8,540</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 8.2%
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Gastos</h3>
+                            <p class="stat-value">$3,280</p>
+                            <p class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i> 3.1%
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Clientes</h3>
+                            <p class="stat-value">24</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 4.3%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card chart-card">
+                        <div class="card-header">
+                            <h2>Producción Mensual</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon" title="Más opciones">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="productionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card chart-card">
+                        <div class="card-header">
+                            <h2>Distribución de Ingresos</h2>
+                            <div class="card-actions">
+                                <button class="btn-icon" title="Más opciones">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Últimas Transacciones</h2>
+                            <div class="card-actions">
+                                <a href="#" class="btn-text">Ver todas</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="transactions-list" id="transactionsList">
+                                <!-- Las transacciones se cargarán dinámicamente -->
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Próximas Vacunaciones</h2>
+                            <div class="card-actions">
+                                <a href="/hensys-fronend/pages/vacunacion.html" class="btn-text">Ver todas</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="upcoming-list" id="vaccinationsList">
+                                <!-- Las vacunaciones se cargarán dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Footer -->
+    <div id = "footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+    <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+    <script src="/hensys-fronend/assets/js/charts.js"></script>
+    <script src="/hensys-fronend/assets/js/modules/dashboard.js"></script>
+    <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

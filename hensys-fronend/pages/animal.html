@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Animal</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Animal</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Animal</p>
+
+      <div class="dashboard-content">
+        <!-- Resumen de animales -->
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-feather"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Total Aves</h3>
+              <p class="stat-value">1,590</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 3.2%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-egg"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Ponedoras</h3>
+              <p class="stat-value">850</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 2.5%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-drumstick-bite"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Engorde</h3>
+              <p class="stat-value">620</p>
+              <p class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 4.1%
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Reproductoras</h3>
+              <p class="stat-value">120</p>
+              <p class="stat-change neutral">
+                <i class="fas fa-equals"></i> 0%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-container">
+          <div class="filters">
+            <div class="filter-group">
+              <label for="animalTypeFilter">Filtrar por tipo:</label>
+              <select id="animalTypeFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="Ponedora">Ponedoras</option>
+                <option value="Engorde">Engorde</option>
+                <option value="Reproductora">Reproductoras</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="animalAgeFilter">Edad:</label>
+              <select id="animalAgeFilter" class="form-select">
+                <option value="all">Todas</option>
+                <option value="0-4">0-4 semanas</option>
+                <option value="5-12">5-12 semanas</option>
+                <option value="13-20">13-20 semanas</option>
+                <option value="21+">21+ semanas</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="animalCoopFilter">Galpón:</label>
+              <select id="animalCoopFilter" class="form-select">
+                <option value="all">Todos</option>
+                <option value="1">Galpón 1</option>
+                <option value="2">Galpón 2</option>
+                <option value="3">Galpón 3</option>
+                <option value="4">Galpón 4</option>
+                <option value="5">Galpón 5</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-outline" id="filterAnimalsButton">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <button class="btn btn-outline" id="exportAnimalsButton">
+              <i class="fas fa-file-export"></i> Exportar
+            </button>
+            <button class="btn btn-primary" id="newAnimalButton">
+              <i class="fas fa-plus"></i> Nuevo Lote
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de animales -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registro de Lotes</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="animalsTable">
+                <thead>
+                  <tr>
+                    <th>ID Lote</th>
+                    <th>Tipo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Edad (semanas)</th>
+                    <th>Galpón</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Datos dinámicos -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registrar Lote</h2>
+          </div>
+          <div class="card-body">
+            <form id="addAnimalForm" class="form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="animalType">Tipo:</label>
+                  <select id="animalType" class="form-select" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="Ponedora">Ponedora</option>
+                    <option value="Engorde">Engorde</option>
+                    <option value="Reproductora">Reproductora</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="animalQuantity">Cantidad:</label>
+                  <input type="number" id="animalQuantity" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="animalEntryDate">Fecha de Ingreso:</label>
+                  <input type="date" id="animalEntryDate" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="animalAge">Edad (semanas):</label>
+                  <input type="number" id="animalAge" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="animalCoop">Galpón:</label>
+                  <select id="animalCoop" class="form-select" required>
+                    <option value="">Seleccione un galpón</option>
+                    <option value="1">Galpón 1</option>
+                    <option value="2">Galpón 2</option>
+                    <option value="3">Galpón 3</option>
+                    <option value="4">Galpón 4</option>
+                    <option value="5">Galpón 5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="animalBreed">Raza:</label>
+                  <input type="text" id="animalBreed" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="animalProvider">Proveedor:</label>
+                  <input type="text" id="animalProvider" class="form-input" />
+                </div>
+                <div class="form-group span-2">
+                  <label for="animalNotes">Observaciones:</label>
+                  <textarea id="animalNotes" class="form-textarea"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Limpiar</button>
+                <button type="submit" class="btn btn-primary">Registrar Lote</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Mortalidad y Salud -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registro de Mortalidad y Salud</h2>
+            <div class="card-actions">
+              <button class="btn btn-primary" id="newHealthRecordButton">
+                <i class="fas fa-plus"></i> Nuevo Registro
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="healthTable">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Lote</th>
+                    <th>Tipo</th>
+                    <th>Mortalidad</th>
+                    <th>Causa</th>
+                    <th>Tratamiento</th>
+                    <th>Responsable</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Datos dinámicos -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/validation.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/animal.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>

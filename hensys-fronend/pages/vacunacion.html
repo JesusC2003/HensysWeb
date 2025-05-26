@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HENSYS - Vacunación</title>
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 id="pageTitle">Vacunación</h1>
+      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Vacunación</p>
+
+      <div class="dashboard-content">
+        <!-- Calendario -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Calendario de Vacunación</h2>
+            <div class="card-actions">
+              <button class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Ver Mes</button>
+              <button class="btn btn-outline"><i class="fas fa-calendar-week"></i> Ver Semana</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="calendar-container" id="vaccinationCalendar">
+              <div class="calendar-placeholder">
+                <p>Calendario en desarrollo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Próximas vacunaciones -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Próximas Vacunaciones</h2>
+            <div class="card-actions">
+              <button class="btn btn-primary" id="newVaccinationButton">
+                <i class="fas fa-plus"></i> Nueva Vacunación
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="upcoming-list" id="upcomingVaccinations">
+              <!-- Las vacunaciones se cargarán dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Historial de Vacunación</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="vaccinationHistoryTable">
+                <thead>
+                  <tr>
+                    <th>Vacuna</th>
+                    <th>Galpón</th>
+                    <th>Cantidad de Aves</th>
+                    <th>Fecha</th>
+                    <th>Responsable</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Registrar Vacunación</h2>
+          </div>
+          <div class="card-body">
+            <form id="addVaccinationForm" class="form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="vaccinationType">Tipo de Vacuna:</label>
+                  <select id="vaccinationType" class="form-select" required>
+                    <option value="">Seleccione una vacuna</option>
+                    <option value="Newcastle">Newcastle</option>
+                    <option value="Bronquitis">Bronquitis</option>
+                    <option value="Marek">Marek</option>
+                    <option value="Gumboro">Gumboro</option>
+                    <option value="Viruela">Viruela</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="vaccinationCoop">Galpón:</label>
+                  <select id="vaccinationCoop" class="form-select" required>
+                    <option value="">Seleccione un galpón</option>
+                    <option value="1">Galpón 1</option>
+                    <option value="2">Galpón 2</option>
+                    <option value="3">Galpón 3</option>
+                    <option value="4">Galpón 4</option>
+                    <option value="5">Galpón 5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="vaccinationBirds">Cantidad de Aves:</label>
+                  <input type="number" id="vaccinationBirds" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="vaccinationDate">Fecha:</label>
+                  <input type="date" id="vaccinationDate" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="vaccinationResponsible">Responsable:</label>
+                  <input type="text" id="vaccinationResponsible" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label for="vaccinationNotes">Observaciones:</label>
+                  <textarea id="vaccinationNotes" class="form-textarea"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Limpiar</button>
+                <button type="submit" class="btn btn-primary">Registrar Vacunación</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
+  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
+  <script src="/hensys-fronend/assets/js/modules/vacunacion.js"></script>
+  <script src="/hensys-fronend/assets/js/app.js"></script>
+</body>
+</html>
