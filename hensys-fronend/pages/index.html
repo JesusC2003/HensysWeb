@@ -12,19 +12,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header"></div>
-
+  
     <div class="app-container">
 
         <!-- Sidebar -->
        <div id="sidebar"></div>
 
         <!-- Main Content -->
-        <main class="main-content">           
+        <main class="main-content">                      
+            
+             <!-- Header -->
+            <div class="header-bar">
+                <div class="header-info">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p class="breadcrumb" id="pageBreadcrumb">Inicio / Dashboard</p>
+                </div>
 
-            <h1 id="pageTitle">Dashboard</h1>
-            <p class="breadcrumb" id="pageBreadcrumb">Inicio / Dashboard</p>
+                <div class="header-actions">
+                    <button class="btn-icon" title="Notificaciones">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="btn-icon" title="Configuración">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
 
             <div class="dashboard-content">
                 <div class="stats-cards">
@@ -146,8 +159,6 @@
             </div>
         </main>
     </div>
-    <!-- Footer -->
-    <div id = "footer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/hensys-fronend/assets/js/utils/data.js"></script>

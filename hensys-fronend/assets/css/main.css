@@ -1,7 +1,7 @@
 /* Main CSS File */
 :root {
   /* Primary Colors */
-  --primary-color: #2e7d32;
+  --primary-color: #4caf50;
   --primary-light: #60ad5e;
   --primary-dark: #005005;
 
@@ -126,27 +126,17 @@ button {
 /* App Container - Aplicando el diseño de tarjetas */
 .app-container {
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  margin: 1.5rem 2.5rem;
+  padding: 0;
+  margin: 0;
   box-shadow: var(--card-shadow);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
   animation: fadeIn 0.8s ease-out;
   display: flex;
-  height: calc(100vh - 3rem); /* Altura fija basada en viewport */
+  height: 100vh; /* Altura fija basada en viewport */
 }
 
-.app-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-}
 
 /* Sidebar */
 .sidebar {
@@ -160,8 +150,8 @@ button {
   position: relative;
   z-index: 100;
   box-shadow: var(--shadow-md);
-  border-radius: var(--border-radius-lg);
-  margin-right: var(--spacing-lg);
+
+  /*margin-right: var(--spacing-lg);*/
   flex-shrink: 0;
   overflow: hidden; /* Sin scroll en todo el sidebar */
 }
@@ -549,12 +539,11 @@ button {
 /* Main Content - Altura fija igual al sidebar */
 .main-content {
   flex: 1;
-  height: 100%; /* Altura igual al contenedor padre */
-  overflow: hidden; /* Sin scroll en el contenedor principal */
-  padding: var(--spacing-lg);
+  height: 100%; 
+  overflow: hidden; 
+  padding:  0;
   transition: margin-left var(--transition-normal);
   background: var(--surface-color);
-  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
@@ -568,7 +557,9 @@ button {
 .dashboard-content {
   flex: 1;
   overflow-y: auto; /* Solo el contenido interno tiene scroll */
-  padding-right: var(--spacing-sm); /* Espacio para el scrollbar */
+  padding-right: var(--spacing-sm);/* Espacio para el scrollbar */
+  padding-left: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
 }
 
 /* Formularios y contenido específico con scroll */
@@ -624,52 +615,10 @@ button {
   z-index: var(--z-sticky);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   margin-bottom: var(--spacing-sm);
   min-height: 100px;
   flex-shrink: 0; /* Evita que el header se encoja */
-}
-
-.top-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-  border-radius: 2px;
-}
-
-/* Logo Section - Más grande y simple */
-.top-header .logo {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  padding: 0;
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-  transition: none;
-}
-
-.top-header .logo:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-.top-header .logo img {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--border-radius-md);
-  object-fit: cover;
-  border: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.top-header .logo h1 {
-  display: none; /* Ocultamos el h1 del logo */
 }
 
 /* Header Center - Solo título HENSYS */
@@ -677,32 +626,6 @@ button {
   flex: 1;
   text-align: center;
   padding: 0;
-}
-
-.header-left h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin: 0;
-  background: none;
-  -webkit-background-clip: unset;
-  -webkit-text-fill-color: unset;
-  background-clip: unset;
-  text-align: center;
-  position: relative;
-  letter-spacing: 2px;
-}
-
-.header-left h1::after {
-  content: "";
-  position: absolute;
-  bottom: 3px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  border-radius: 2px;
 }
 
 .breadcrumb {
@@ -718,14 +641,39 @@ button {
   gap: var(--spacing-lg);
 }
 
+.header-bar {
+  background-color: var(--primary-color); /* #4caf50 con opacidad */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  padding-left: var(--spacing-md);
+}
+
+.header-info h1 {
+  margin: 0;
+  color: var(--surface-color);
+}
+
+.header-info .breadcrumb {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--surface-color);
+}
+
 .search-container {
-  display: none; /* Ocultamos la barra de búsqueda */
+  display: none; 
 }
 
 .header-actions {
   display: flex;
   gap: var(--spacing-md);
   align-items: center;
+  padding-right: var(--spacing-lg);
 }
 
 .header-actions .btn-icon {
