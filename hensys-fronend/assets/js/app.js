@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarComponente("header", "../components/header.html")
   cargarComponente("sidebar", "../components/sidebar.html")
   cargarComponente("modals", "../components/modals.html")
-  cargarComponente("footer", "../components/footer.html")
 
   // Espera breve para asegurarse de que los componentes ya estén insertados
   setTimeout(() => {
