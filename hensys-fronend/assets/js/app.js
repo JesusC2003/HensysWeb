@@ -2,6 +2,44 @@
  * Main Application Script
  */
 
+// Configuración de páginas
+const PAGE_TITLES = {
+    'index.html': { title: 'Dashboard', breadcrumb: 'Inicio / Dashboard' },
+    'alimentacion.html': { title: 'Alimentación', breadcrumb: 'Inicio / Alimentación' },
+    'facturacion.html': { title: 'Facturación', breadcrumb: 'Inicio / Facturación' },
+    'vacunacion.html': { title: 'Vacunación', breadcrumb: 'Inicio / Salud' },
+    'produccion.html': { title: 'Producción', breadcrumb: 'Inicio / Producción' },
+    'clientes.html': { title: 'Clientes', breadcrumb: 'Inicio / Clientes' },
+    'animal.html': { title: 'Animal', breadcrumb: 'Inicio / Animal' },
+    'galpones.html': { title: 'Galpones', breadcrumb: 'Inicio / Galpones' },
+    'gastos.html': { title: 'Gastos', breadcrumb: 'Inicio / Gastos' }
+};
+
+// Función para actualizar el header dinámicamente
+function actualizarTituloHeader() {
+    // Obtener el nombre del archivo actual
+    const currentPath = window.location.pathname;
+    const fileName = currentPath.split('/').pop() || 'dashboard.html';
+    
+    // Obtener configuración de la página actual
+    const pageConfig = PAGE_TITLES[fileName] || PAGE_TITLES['dashboard.html'];
+    
+    // Actualizar elementos del header
+    const titleElement = document.getElementById('pageTitle');
+    const breadcrumbElement = document.getElementById('pageBreadcrumb');
+    
+    if (titleElement) {
+        titleElement.textContent = pageConfig.title;
+    }
+    
+    if (breadcrumbElement) {
+        breadcrumbElement.textContent = pageConfig.breadcrumb;
+    }
+    
+    // Actualizar título de la pestaña del navegador
+    document.title = `HENSYS - ${pageConfig.title}`;
+}
+
 // Función para cargar componentes HTML como header, sidebar, modals
 async function cargarComponente(id, ruta) {
   const elemento = document.getElementById(id)
@@ -11,6 +49,14 @@ async function cargarComponente(id, ruta) {
       if (!respuesta.ok) throw new Error(`Error al cargar ${ruta}`)
       const html = await respuesta.text()
       elemento.innerHTML = html
+      
+      // Si se cargó el header, actualizar el título
+      if (id === "Header") {
+        setTimeout(() => {
+          actualizarTituloHeader();
+        }, 50);
+      }
+      
     } catch (error) {
       console.error(`Error al insertar ${id} desde ${ruta}:`, error)
     }
@@ -80,6 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Inicializar otros componentes o plugins visuales
     inicializarComponentes()
+    
+    // Actualizar título del header (fallback)
+    actualizarTituloHeader()
+    
   }, 100) // Espera mínima para asegurar que el HTML de los componentes esté disponible
 })
 
