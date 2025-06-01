@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Metadatos básicos -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HENSYS - Galpones</title>
-  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
-  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
-  <link rel="stylesheet" href="/hensys-fronend/assets/css/dashboard.css" />
-  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
-  <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <title>HENSYS - Gestión de Galpones Avícolas</title>
+  
+  <!-- Hojas de estilo -->
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />          <!-- Estilos generales -->
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />         <!-- Estilos para formularios -->
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/dashboard.css" />     <!-- Estilos del panel de control -->
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />        <!-- Estilos para tablas -->
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />    <!-- Componentes reutilizables -->
+  
+  <!-- Librerías externas -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  <!-- Iconos Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />  <!-- Fuente Poppins -->
 </head>
 <body>
 
+  <!-- Contenedor principal de la aplicación -->
   <div class="app-container">
 
-    <!-- Sidebar -->
+    <!-- ========== BARRA LATERAL ========== -->
+    <!-- Se carga dinámicamente desde JS -->
     <div id="sidebar"></div>
 
-    <!-- Main Content -->
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
     <main class="main-content">
 
+      <!-- Encabezado (cargado dinámicamente) -->
       <div id="Header"></div>
 
+      <!-- Contenido del dashboard -->
       <div class="dashboard-content">
 
-        <!-- Stats Cards -->
+        <!-- ===== TARJETAS DE ESTADÍSTICAS ===== -->
         <div class="stats-cards">
+          <!-- Tarjeta 1: Total de galpones -->
           <div class="stat-card">
             <div class="stat-icon">
-              <i class="fas fa-warehouse"></i>
+              <i class="fas fa-warehouse"></i>  <!-- Icono -->
             </div>
             <div class="stat-info">
               <h3>Total Galpones</h3>
-              <p class="stat-value">8</p>
-              <p class="stat-change neutral">
+              <p class="stat-value">8</p>      <!-- Valor principal -->
+              <p class="stat-change neutral">   <!-- Variación -->
                 <i class="fas fa-equals"></i> 0%
               </p>
             </div>
           </div>
 
+          <!-- Tarjeta 2: Temperatura -->
           <div class="stat-card">
             <div class="stat-icon">
               <i class="fas fa-thermometer-half"></i>
@@ -50,12 +59,13 @@
             <div class="stat-info">
               <h3>Temperatura Promedio</h3>
               <p class="stat-value">24.5°C</p>
-              <p class="stat-change positive">
+              <p class="stat-change positive">  <!-- Aumento -->
                 <i class="fas fa-arrow-up"></i> 1.2°C
               </p>
             </div>
           </div>
 
+          <!-- Tarjeta 3: Humedad -->
           <div class="stat-card">
             <div class="stat-icon">
               <i class="fas fa-tint"></i>
@@ -63,12 +73,13 @@
             <div class="stat-info">
               <h3>Humedad Promedio</h3>
               <p class="stat-value">65%</p>
-              <p class="stat-change negative">
+              <p class="stat-change negative">  <!-- Disminución -->
                 <i class="fas fa-arrow-down"></i> 3%
               </p>
             </div>
           </div>
 
+          <!-- Tarjeta 4: Ocupación -->
           <div class="stat-card">
             <div class="stat-icon">
               <i class="fas fa-percentage"></i>
@@ -83,9 +94,11 @@
           </div>
         </div>
 
-        <!-- Filtros y Acciones -->
+        <!-- ===== FILTROS Y BOTONES DE ACCIÓN ===== -->
         <div class="filters-container">
+          <!-- Grupo de filtros -->
           <div class="filters">
+            <!-- Filtro por tipo de galpón -->
             <div class="filter-group">
               <label for="coopTypeFilter">Filtrar por tipo:</label>
               <select id="coopTypeFilter" class="form-select">
@@ -95,6 +108,8 @@
                 <option value="Reproductoras">Reproductoras</option>
               </select>
             </div>
+            
+            <!-- Filtro por estado -->
             <div class="filter-group">
               <label for="coopStatusFilter">Estado:</label>
               <select id="coopStatusFilter" class="form-select">
@@ -105,6 +120,8 @@
               </select>
             </div>
           </div>
+          
+          <!-- Botones de acción -->
           <div class="actions">
             <button class="btn btn-outline" id="filterCoopsButton">
               <i class="fas fa-filter"></i> Filtrar
@@ -115,12 +132,13 @@
           </div>
         </div>
 
-        <!-- Tarjetas de galpones -->
+        <!-- ===== TARJETAS DE GALPONES (VISTA DE CUADRICULA) ===== -->
+        <!-- Contenedor donde se cargarán dinámicamente las tarjetas -->
         <div class="coop-cards" id="coopCards">
-          <!-- Se cargan dinámicamente -->
+          <!-- Los galpones se muestran aquí via JavaScript -->
         </div>
 
-        <!-- Tabla de Galpones -->
+        <!-- ===== TABLA DE GALPONES (VISTA DE LISTA) ===== -->
         <div class="card">
           <div class="card-header">
             <h2>Listado de Galpones</h2>
@@ -130,34 +148,38 @@
               <table class="table" id="coopsTable">
                 <thead>
                   <tr>
-                    <th>Número</th>
-                    <th>Tipo</th>
-                    <th>Capacidad</th>
-                    <th>Ocupación</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th>Número</th>       <!-- Identificador único -->
+                    <th>Tipo</th>         <!-- Ponedoras/Engorde/Reproductoras -->
+                    <th>Capacidad</th>    <!-- Máximo de aves -->
+                    <th>Ocupación</th>    <!-- Porcentaje de capacidad usada -->
+                    <th>Estado</th>       <!-- Activo/Mantenimiento/Inactivo -->
+                    <th>Acciones</th>     <!-- Ver/Editar/Eliminar -->
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- Se cargan dinámicamente -->
+                  <!-- Filas cargadas dinámicamente desde JavaScript -->
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Formulario de Registro -->
+        <!-- ===== FORMULARIO DE REGISTRO ===== -->
         <div class="card">
           <div class="card-header">
             <h2>Registrar Galpón</h2>
           </div>
           <div class="card-body">
             <form id="addCoopForm" class="form">
-              <div class="form-grid">
+              <div class="form-grid">  <!-- Diseño en cuadrícula -->
+                
+                <!-- Campo: Número de galpón -->
                 <div class="form-group">
                   <label for="coopNumber">Número:</label>
                   <input type="number" id="coopNumber" class="form-input" required />
                 </div>
+                
+                <!-- Campo: Tipo de galpón -->
                 <div class="form-group">
                   <label for="coopType">Tipo:</label>
                   <select id="coopType" class="form-select" required>
@@ -167,10 +189,14 @@
                     <option value="Reproductoras">Reproductoras</option>
                   </select>
                 </div>
+                
+                <!-- Campo: Capacidad máxima -->
                 <div class="form-group">
                   <label for="coopCapacity">Capacidad:</label>
                   <input type="number" id="coopCapacity" class="form-input" required />
                 </div>
+                
+                <!-- Campo: Estado actual -->
                 <div class="form-group">
                   <label for="coopStatus">Estado:</label>
                   <select id="coopStatus" class="form-select" required>
@@ -179,19 +205,27 @@
                     <option value="Inactivo">Inactivo</option>
                   </select>
                 </div>
+                
+                <!-- Campo: Dimensiones (opcional) -->
                 <div class="form-group">
                   <label for="coopDimensions">Dimensiones (m²):</label>
                   <input type="number" id="coopDimensions" class="form-input" />
                 </div>
+                
+                <!-- Campo: Ubicación física (opcional) -->
                 <div class="form-group">
                   <label for="coopLocation">Ubicación:</label>
                   <input type="text" id="coopLocation" class="form-input" />
                 </div>
-                <div class="form-group span-2">
+                
+                <!-- Campo: Observaciones (área de texto) -->
+                <div class="form-group span-2">  <!-- Ocupa 2 columnas -->
                   <label for="coopNotes">Observaciones:</label>
                   <textarea id="coopNotes" class="form-textarea"></textarea>
                 </div>
               </div>
+              
+              <!-- Botones del formulario -->
               <div class="form-actions">
                 <button type="reset" class="btn btn-outline">Limpiar</button>
                 <button type="submit" class="btn btn-primary">Registrar Galpón</button>
@@ -204,10 +238,15 @@
     </main>
   </div>
 
-  <script src="/hensys-fronend/assets/js/utils/data.js"></script>
-  <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>
-  <script src="/hensys-fronend/assets/js/utils/validation.js"></script>
-  <script src="/hensys-fronend/assets/js/modules/galpones.js"></script>
-  <script src="/hensys-fronend/assets/js/app.js"></script>
+  <!-- ========== SCRIPTS ========== -->
+  <!-- Utilidades -->
+  <script src="/hensys-fronend/assets/js/utils/data.js"></script>        <!-- Manejo de datos -->
+  <script src="/hensys-fronend/assets/js/utils/validation.js"></script>  <!-- Validaciones -->
+  
+  <!-- Módulos -->
+  <script src="/hensys-fronend/assets/js/modules/galpones.js"></script>  <!-- Lógica de galpones -->
+  
+  <!-- Inicialización -->
+  <script src="/hensys-fronend/assets/js/app.js"></script>              <!-- Configuración inicial -->
 </body>
 </html>

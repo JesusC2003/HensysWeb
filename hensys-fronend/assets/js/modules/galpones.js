@@ -1,7 +1,6 @@
 /**
  * Coops Module
  */
-
 document.addEventListener('DOMContentLoaded', function() {
     cargarGalponesDesdeBackend();
     
@@ -73,13 +72,13 @@ function loadCoopsData() {
             <td><span class="status ${statusClass}">Activo</span></td>
             <td>
                 <div class="table-actions">
-                    <button class="btn-icon btn-view" data-id="${index}">
+                    <button class="btn-icon btn-view" data-id="${item.id}">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn-icon btn-edit" data-id="${index}">
+                    <button class="btn-icon btn-edit" data-id="${item.id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-icon btn-delete" data-id="${index}">
+                    <button class="btn-icon btn-delete" data-id="${item.id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -233,6 +232,7 @@ function setupEventListeners() {
         addCoopForm.addEventListener('submit', handleAddCoop);
     }
 }
+
 async function cargarGalponesDesdeBackend() {
     try {
         const response = await fetch('http://localhost:3000/galpones', {
@@ -377,7 +377,6 @@ async function handleAddCoop(event) {
     submitButton.removeAttribute('data-edit-id');
 }
 
-
 // View coop
 function viewCoop(id) {
     // Get coop data
@@ -393,8 +392,6 @@ function viewCoop(id) {
         Capacidad: ${coop.capacidad}
         Ocupación: ${coop.ocupacion} (${occupationPercentage}%)
     `);
-    
-    // In a real app, this would open a modal with coop details
 }
 
 // Edit coop
