@@ -233,38 +233,44 @@ function setupEventListeners() {
         addCoopForm.addEventListener('submit', handleAddCoop);
     }
 }
-
-function cargarGalponesDesdeBackend() {
-    fetch('http://localhost:3000/galpones')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('✅ Datos cargados desde backend:', data);
-
-            // Adaptar el formato del backend al esperado en appData
-            window.appData.coops = data.map(item => ({
-                id: item.IdGalpon,
-                numero: item.IdGalpon,
-                tipo: item.Tipo || 'Desconocido', // Por si no hay tipo
-                capacidad: item.CapacidadMax,
-                ocupacion: 0, // Puedes cambiar esto si tienes un campo de ocupación real
-                estado: item.Estado,
-                dimensiones: 0,
-                ubicacion: '',
-                observaciones: ''
-            }));
-
-            // Volver a cargar la UI con los datos del backend
-            loadCoopsData();
-            loadCoopCards();
-        })
-        .catch(error => {
-            console.error('❌ Error al cargar galpones desde backend:', error);
+async function cargarGalponesDesdeBackend() {
+    try {
+        const response = await fetch('http://localhost:3000/galpones', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            credentials: 'include' 
         });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ Datos cargados desde backend:', data);
+
+        window.appData.coops = data.map(item => ({
+            id: item.IdGalpon,
+            numero: item.IdGalpon,
+            tipo: item.Tipo || 'Desconocido',
+            capacidad: item.CapacidadMax,
+            ocupacion: 0,
+            estado: item.Estado,
+            dimensiones: 0,
+            ubicacion: '',
+            observaciones: ''
+        }));
+
+        loadCoopsData();
+        loadCoopCards();
+    } catch (error) {
+        console.error('❌ Error al cargar galpones:', error);
+        // Mostrar notificación al usuario
+        alert(`Error al cargar datos: ${error.message}`);
+    }
 }
 
 // Add action button listeners
@@ -297,10 +303,9 @@ function addActionButtonListeners() {
     });
 }
 
-// Handle add coop
-function handleAddCoop(event) {
+async function handleAddCoop(event) {
     event.preventDefault();
-    
+
     // Get form data
     const form = event.target;
     const numero = form.querySelector('#coopNumber').value;
@@ -310,75 +315,68 @@ function handleAddCoop(event) {
     const dimensiones = form.querySelector('#coopDimensions').value;
     const ubicacion = form.querySelector('#coopLocation').value;
     const observaciones = form.querySelector('#coopNotes').value;
-    
+
     // Validate data
     if (!numero || !tipo || !capacidad || !estado) {
         alert('Por favor complete todos los campos obligatorios');
         return;
     }
-    
-    // Validate with validation.js
+
     if (!window.validation.isValidNumber(numero, 1, 100)) {
         alert('El número de galpón debe ser entre 1 y 100');
         return;
     }
-    
+
     if (!window.validation.isValidNumber(capacidad, 10, 1000)) {
         alert('La capacidad debe ser entre 10 y 1000');
         return;
     }
-    
-    // Check if editing
+
     const submitButton = form.querySelector('button[type="submit"]');
     const editId = submitButton ? submitButton.getAttribute('data-edit-id') : null;
-    
+
     if (editId) {
-        // Update coop
-        window.appData.coops[editId] = {
-            ...window.appData.coops[editId],
-            numero: parseInt(numero),
-            tipo,
-            capacidad: parseInt(capacidad),
-            estado,
-            dimensiones: dimensiones ? parseInt(dimensiones) : null,
-            ubicacion,
-            observaciones
-        };
-        
-        // Reset button
-        submitButton.textContent = 'Registrar Galpón';
-        submitButton.removeAttribute('data-edit-id');
-        
-        // Show success message
-        showNotification('Galpón actualizado con éxito', 'success');
+        // Por ahora dejamos vacío; puedes implementar el PUT aquí si lo deseas
+        showNotification('Edición de galpones aún no implementada', 'info');
     } else {
-        // Create new coop
-        const newCoop = {
-            id: window.appData.coops.length + 1,
-            numero: parseInt(numero),
-            tipo,
-            capacidad: parseInt(capacidad),
-            ocupacion: 0, // New coops start empty
-            estado,
-            dimensiones: dimensiones ? parseInt(dimensiones) : null,
-            ubicacion,
-            observaciones
+        // Nuevo galpón (crear)
+        const newGalpon = {
+            Numero: parseInt(numero),
+            Tipo: tipo,
+            CapacidadMax: parseInt(capacidad),
+            Estado: estado,
+            Observaciones: observaciones,
+            IdGranja: 1 // ← Ajusta este valor según el ID de la granja real
         };
-        
-        // Add to data
-        window.appData.coops.push(newCoop);
-        
-        // Show success message
-        showNotification('Galpón registrado con éxito', 'success');
+
+        try {
+            const response = await fetch('http://localhost:3000/galpones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newGalpon)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al registrar galpón');
+            }
+
+            showNotification('Galpón registrado con éxito', 'success');
+            cargarGalponesDesdeBackend(); // Recarga la tabla y tarjetas desde la base de datos
+            form.reset();
+        } catch (error) {
+            console.error('❌ Error al guardar galpón:', error);
+            showNotification('Error al registrar galpón: ' + error.message, 'error');
+        }
     }
-    
-    // Reload data
-    loadCoopsData();
-    loadCoopCards();
-    
-    // Reset form
-    form.reset();
+
+    // Restaurar botón en caso de edición futura
+    submitButton.textContent = 'Registrar Galpón';
+    submitButton.removeAttribute('data-edit-id');
 }
+
 
 // View coop
 function viewCoop(id) {
