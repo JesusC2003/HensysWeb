@@ -4,8 +4,15 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// Configuración CORS específica
+const corsOptions = {
+  origin: 'http://127.0.0.1:5500', 
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
