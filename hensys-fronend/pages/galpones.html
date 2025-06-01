@@ -6,6 +6,7 @@
   <title>HENSYS - Galpones</title>
   <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css" />
   <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css" />
+  <link rel="stylesheet" href="/hensys-fronend/assets/css/dashboard.css" />
   <link rel="stylesheet" href="/hensys-fronend/assets/css/tables.css" />
   <link rel="stylesheet" href="/hensys-fronend/assets/css/components.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -14,20 +15,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Header -->
-  <div id="header"></div>
 
   <div class="app-container">
+
     <!-- Sidebar -->
     <div id="sidebar"></div>
 
     <!-- Main Content -->
     <main class="main-content">
-      <h1 id="pageTitle">Galpones</h1>
-      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Galpones</p>
+
+      <div id="Header"></div>
 
       <div class="dashboard-content">
-        <!-- Resumen de galpones -->
+
+        <!-- Stats Cards -->
         <div class="stats-cards">
           <div class="stat-card">
             <div class="stat-icon">
@@ -82,7 +83,7 @@
           </div>
         </div>
 
-        <!-- Filtros y acciones -->
+        <!-- Filtros y Acciones -->
         <div class="filters-container">
           <div class="filters">
             <div class="filter-group">
@@ -116,10 +117,10 @@
 
         <!-- Tarjetas de galpones -->
         <div class="coop-cards" id="coopCards">
-          <!-- Las tarjetas se cargarán dinámicamente -->
+          <!-- Se cargan dinámicamente -->
         </div>
 
-        <!-- Tabla de galpones -->
+        <!-- Tabla de Galpones -->
         <div class="card">
           <div class="card-header">
             <h2>Listado de Galpones</h2>
@@ -138,14 +139,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- Los datos se cargarán dinámicamente -->
+                  <!-- Se cargan dinámicamente -->
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Formulario de galpón -->
+        <!-- Formulario de Registro -->
         <div class="card">
           <div class="card-header">
             <h2>Registrar Galpón</h2>
@@ -198,12 +199,10 @@
             </form>
           </div>
         </div>
+
       </div>
     </main>
   </div>
-
-  <!-- Footer -->
-  <div id="footer"></div>
 
   <script src="/hensys-fronend/assets/js/utils/data.js"></script>
   <script src="/hensys-fronend/assets/js/utils/helpers.js"></script>

@@ -14,8 +14,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Header -->
-  <div id="header"></div>
 
   <div class="app-container">
     <!-- Sidebar -->
@@ -23,8 +21,8 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <h1 id="pageTitle">Facturación</h1>
-      <p class="breadcrumb" id="pageBreadcrumb">Inicio / Facturación</p>
+      <!-- Header -->
+      <div id="Header"></div>
 
       <div class="dashboard-content">
         <!-- Filtros y acciones -->
@@ -42,9 +40,6 @@
           <div class="actions">
             <button class="btn btn-outline" id="filterButton">
               <i class="fas fa-filter"></i> Filtrar
-            </button>
-            <button class="btn btn-outline" id="exportButton">
-              <i class="fas fa-file-export"></i> Exportar
             </button>
             <button class="btn btn-primary" id="newInvoiceButton">
               <i class="fas fa-plus"></i> Nueva Factura
@@ -79,9 +74,6 @@
       </div>
     </main>
   </div>
-
-  <!-- Footer -->
-  <div id="footer"></div>
 
   <!-- Modal Nueva Factura -->
   <div class="modal" id="invoiceModal">

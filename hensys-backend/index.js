@@ -1,25 +1,55 @@
-// hensys-backend/index.js
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // ⬅️ Importar cors
-const connection = require('./db/connection');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
-
-// ⬅️ Habilitar CORS para todas las rutas
 app.use(cors());
+app.use(bodyParser.json());
 
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'Hensys-Admin',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'hensys',
+  port: process.env.DB_PORT || 3306
+});
+
+connection.connect(err => {
+  if (err) {
+    console.error('Error conectando a MySQL:', err);
+    process.exit(1);
+  }
+  console.log('Conectado a MySQL');
+});
+
+app.get('/', (req, res) => {
+  res.send('Hensys Backend Funcionando');
+});
+
+// Rutas CRUD para galpones
 app.get('/galpones', (req, res) => {
   connection.query('SELECT * FROM galpon', (err, results) => {
-    if (err) {
-      console.error('Error en la consulta:', err);
-      res.status(500).json({ error: 'Error al obtener galpones' });
-    } else {
-      res.json(results);
-    }
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.post('/galpones', (req, res) => {
+  const { Numero, Tipo, CapacidadMax, Estado, Observaciones, IdGranja } = req.body;
+  connection.query(
+    'INSERT INTO galpon (Numero, Tipo, CapacidadMax, Estado, Observaciones, IdGranja) VALUES (?, ?, ?, ?, ?, ?)',
+    [Numero, Tipo, CapacidadMax, Estado, Observaciones, IdGranja],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ id: result.insertId });
+    }
+  );
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});
+
