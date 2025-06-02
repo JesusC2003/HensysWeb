@@ -1,53 +1,89 @@
-<!-- Modal Template -->
+<!-- Plantilla de ventana modal -->
 <div class="modal" id="modalTemplate">
+    <!-- Capa de superposición que oscurece el fondo -->
     <div class="modal-overlay"></div>
+
+    <!-- Contenedor principal del modal -->
     <div class="modal-container">
+
+        <!-- Contenido del modal -->
         <div class="modal-content">
+
+            <!-- Botón para cerrar el modal -->
             <button class="modal-close" title="Cerrar modal" aria-label="Cerrar modal">
+                <!-- Texto solo visible para lectores de pantalla -->
                 <span class="sr-only">Cerrar modal</span>
+                <!-- Ícono de cerrar (X) -->
                 <i class="fas fa-times"></i>
             </button>
+
+            <!-- Encabezado del modal -->
             <div class="modal-header">
                 <h2>Título del Modal</h2>
             </div>
+
+            <!-- Cuerpo del modal (contenido principal) -->
             <div class="modal-body">
                 Contenido del modal
             </div>
+
+            <!-- Pie del modal (botones de acción) -->
             <div class="modal-footer">
+                <!-- Botón para cancelar -->
                 <button class="btn btn-outline">Cancelar</button>
+                <!-- Botón para guardar o confirmar acción -->
                 <button class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Notification Template -->
+<!-- Plantilla de notificación de éxito -->
 <div class="notification success">
+    <!-- Contenido de la notificación -->
     <div class="notification-content">
+        <!-- Ícono de éxito (check) -->
         <i class="fas fa-check-circle"></i>
+        <!-- Texto del mensaje -->
         <span>Operación realizada con éxito</span>
     </div>
+
+    <!-- Botón para cerrar la notificación -->
     <button class="notification-close" title="Cerrar notificación" aria-label="Cerrar notificación">
+        <!-- Texto solo para lectores de pantalla -->
         <span class="sr-only">Cerrar notificación</span>
+        <!-- Ícono de cerrar (X) -->
         <i class="fas fa-times"></i>
     </button>
 </div>
 
-<!-- Confirmation Dialog Template -->
+<!-- Plantilla de diálogo de confirmación -->
 <div class="confirmation-dialog">
+    <!-- Superposición que oscurece el fondo -->
     <div class="confirmation-overlay"></div>
+
+    <!-- Contenedor del cuadro de confirmación -->
     <div class="confirmation-container">
+
+        <!-- Contenido del diálogo -->
         <div class="confirmation-content">
+
+            <!-- Ícono de pregunta o advertencia -->
             <div class="confirmation-icon">
                 <i class="fas fa-question-circle"></i>
             </div>
+
+            <!-- Mensaje que pide confirmación al usuario -->
             <div class="confirmation-message">
                 ¿Está seguro de que desea realizar esta acción?
             </div>
+
+            <!-- Botones para cancelar o confirmar -->
             <div class="confirmation-actions">
                 <button class="btn btn-outline">Cancelar</button>
                 <button class="btn btn-primary">Confirmar</button>
             </div>
+
         </div>
     </div>
 </div>
