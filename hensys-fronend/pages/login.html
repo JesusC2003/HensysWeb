@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HENSYS - Iniciar Sesión</title>
+    <link rel="stylesheet" href="/hensys-fronend/assets/css/main.css">
+    <link rel="stylesheet" href="/hensys-fronend/assets/css/forms.css">
+    <link rel="stylesheet" href="/hensys-fronend/assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-brand">
+            <img src="/hensys-fronend/assets/img/gallina.png" alt="HENSYS Logo">
+            <h1>HENSYS</h1>
+            <p>Sistema integral de gestión avícola para optimizar tu producción y maximizar tus resultados.</p>
+        </div>
+
+        <div class="auth-form">
+            <div class="auth-header">
+                <h2 id="formTitle">Iniciar Sesión</h2>
+                <p id="formSubtitle">Accede a tu cuenta para gestionar tu granja</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- Formulario de Login -->
+            <form id="loginForm" style="display: block;">
+                <div class="form-group">
+                    <label for="loginUsername">Usuario</label>
+                    <input type="text" id="loginUsername" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" class="form-input" required>
+                </div>
+                <button type="submit" class="btn-auth" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label for="registerIdentification">Número de Identificación</label>
+                    <input type="text" id="registerIdentification" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerUsername">Usuario</label>
+                    <input type="text" id="registerUsername" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña</label>
+                    <input type="password" id="registerPassword" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <input type="password" id="confirmPassword" class="form-input" required>
+                </div>
+                <button type="submit" class="btn-auth" id="registerBtn">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+            </form>
+
+            <!-- Formulario de Granja -->
+            <form id="granjaForm" style="display: none;">
+                <div class="form-group">
+                    <label for="granjaName">Nombre de la Granja</label>
+                    <input type="text" id="granjaName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="granjaNIT">NIT</label>
+                    <input type="text" id="granjaNIT" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="granjaLocation">Ubicación</label>
+                    <input type="text" id="granjaLocation" class="form-input" required>
+                </div>
+                <button type="submit" class="btn-auth" id="granjaBtn">
+                    <i class="fas fa-warehouse"></i> Registrar Granja
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i> Procesando...
+            </div>
+
+            <div class="auth-switch">
+                <span id="switchText">¿No tienes cuenta?</span>
+                <a href="#" id="switchLink">Regístrate aquí</a>
+            </div>
+        </div>
+    </div>
+    <script src="/hensys-fronend/assets/js/utils/auth.js"></script>
+    <script src="/hensys-fronend/assets/js/modules/login.js"></script>
+</body>
+</html>
