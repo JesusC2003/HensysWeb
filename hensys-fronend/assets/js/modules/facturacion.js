@@ -1,123 +1,146 @@
 /**
- * Invoicing Module
+ * Módulo de Facturación - Integrado con Backend
  */
 
-// Global variables
+// Variable global para items de factura
 let invoiceItems = [];
+const API_BASE_URL = 'http://localhost:3000'; // Base URL para las APIs
 
+// Cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
-    // Load invoices data
     loadInvoicesData();
-    
-    // Set up event listeners
     setupEventListeners();
 });
 
-// Load invoices data
-function loadInvoicesData() {
+// Cargar facturas desde API
+async function loadInvoicesData() {
     const tableBody = document.querySelector('#invoicesTable tbody');
     if (!tableBody) return;
     
-    // Get invoices data
-    const invoicesData = window.appData.invoices;
-    
-    // Get filter values
-    const clientFilter = document.getElementById('clientFilter');
-    const dateFilter = document.getElementById('dateFilter');
-    
-    const clientValue = clientFilter ? clientFilter.value : '';
-    const dateValue = dateFilter ? dateFilter.value : '';
-    
-    // Filter data
-    let filteredData = [...invoicesData];
-    
-    if (clientValue) {
-        filteredData = filteredData.filter(item => item.cliente.toLowerCase().includes(clientValue.toLowerCase()));
-    }
-    
-    if (dateValue) {
-        const filterDate = new Date(dateValue);
-        filteredData = filteredData.filter(item => {
-            const itemDate = new Date(item.fecha);
-            return itemDate.toDateString() === filterDate.toDateString();
+    try {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Cargando facturas...</td></tr>`;
+
+        // Obtener facturas desde API
+        const response = await fetch(`${API_BASE_URL}/facturas`);
+        if (!response.ok) throw new Error('Error al cargar facturas');
+        const invoicesData = await response.json();
+
+        // Obtener clientes para mapear IDs a nombres
+        const clientesResponse = await fetch(`${API_BASE_URL}/clientes`);
+        if (!clientesResponse.ok) throw new Error('Error al cargar clientes');
+        const clientes = await clientesResponse.json();
+
+        // Crear mapa de clientes (IdCliente -> Nombre)
+        const clientesMap = {};
+        clientes.forEach(cliente => {
+            clientesMap[cliente.IdCliente] = cliente.Nombre;
         });
-    }
-    
-    // Clear table
-    tableBody.innerHTML = '';
-    
-    // Add data rows
-    if (filteredData.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center">No se encontraron facturas</td>
-            </tr>
-        `;
-        return;
-    }
-    
-    filteredData.forEach((item, index) => {
-        const row = document.createElement('tr');
+
+        // Aplicar filtros
+        const clientFilter = document.getElementById('clientFilter');
+        const dateFilter = document.getElementById('dateFilter');
         
-        row.innerHTML = `
-            <td>${item.numero}</td>
-            <td>${item.cliente}</td>
-            <td>${window.helpers.formatDate(item.fecha)}</td>
-            <td>${window.helpers.formatCurrency(item.total)}</td>
-            <td>
-                <div class="table-actions">
-                    <button class="btn-icon btn-view" data-id="${index}">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn-icon btn-print" data-id="${index}">
-                        <i class="fas fa-print"></i>
-                    </button>
-                    <button class="btn-icon btn-delete" data-id="${index}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </td>
-        `;
+        const clientValue = clientFilter ? clientFilter.value : '';
+        const dateValue = dateFilter ? dateFilter.value : '';
         
-        tableBody.appendChild(row);
-    });
-    
-    // Add event listeners to action buttons
-    addActionButtonListeners();
+        let filteredData = [...invoicesData];
+        
+        if (clientValue) {
+            filteredData = filteredData.filter(item => {
+                const clienteNombre = clientesMap[item.IdCliente] || '';
+                return clienteNombre.toLowerCase().includes(clientValue.toLowerCase());
+            });
+        }
+        
+        if (dateValue) {
+            const filterDate = new Date(dateValue);
+            filteredData = filteredData.filter(item => {
+                const itemDate = new Date(item.Fecha);
+                return itemDate.toDateString() === filterDate.toDateString();
+            });
+        }
+        
+        // Limpiar y llenar tabla
+        tableBody.innerHTML = '';
+        
+        if (filteredData.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No se encontraron facturas</td></tr>`;
+            return;
+        }
+        
+        filteredData.forEach((item) => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td>F-${item.IdFactura.toString().padStart(3, '0')}</td>
+                <td>${clientesMap[item.IdCliente] || 'Cliente no encontrado'}</td>
+                <td>${window.helpers.formatDate(item.Fecha)}</td>
+                <td>${window.helpers.formatCurrency(item.Total)}</td>
+                <td>
+                    <div class="table-actions">
+                        <button class="btn-icon btn-view" data-id="${item.IdFactura}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon btn-print" data-id="${item.IdFactura}">
+                            <i class="fas fa-print"></i>
+                        </button>
+                        <button class="btn-icon btn-delete" data-id="${item.IdFactura}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            tableBody.appendChild(row);
+        });
+        
+        addActionButtonListeners();
+    } catch (error) {
+        console.error('Error:', error);
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center error">Error al cargar facturas</td></tr>`;
+        showNotification('Error al cargar facturas: ' + error.message, 'error');
+    }
 }
 
-// Set up event listeners
+// Configurar event listeners
 function setupEventListeners() {
-    // Filter change
+    // Filtro por cliente
     const clientFilter = document.getElementById('clientFilter');
     if (clientFilter) {
         clientFilter.addEventListener('change', loadInvoicesData);
     }
     
+    // Filtro por fecha
     const dateFilter = document.getElementById('dateFilter');
     if (dateFilter) {
         dateFilter.addEventListener('change', loadInvoicesData);
     }
     
-    // Filter button
+    // Botón de filtrar
     const filterButton = document.getElementById('filterButton');
     if (filterButton) {
         filterButton.addEventListener('click', loadInvoicesData);
     }
     
-    // New invoice button
+    // Botón de nueva factura
     const newInvoiceButton = document.getElementById('newInvoiceButton');
     if (newInvoiceButton) {
         newInvoiceButton.addEventListener('click', openNewInvoiceModal);
     }
     
-    // Export button
-    const exportButton = document.getElementById('exportButton');
-    if (exportButton) {
-        exportButton.addEventListener('click', exportInvoices);
+    // Botón para agregar item a factura
+    const addItemButton = document.getElementById('addInvoiceItemButton');
+    if (addItemButton) {
+        addItemButton.addEventListener('click', addInvoiceItem);
     }
     
-    // Modal close buttons
+    // Botón para guardar factura
+    const saveInvoiceButton = document.getElementById('saveInvoiceButton');
+    if (saveInvoiceButton) {
+        saveInvoiceButton.addEventListener('click', saveInvoice);
+    }
+    
+    // Botones para cerrar modales
     const closeButtons = document.querySelectorAll('.modal-close');
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -125,23 +148,11 @@ function setupEventListeners() {
             closeModal(modalId);
         });
     });
-    
-    // Add item button in invoice modal
-    const addItemButton = document.getElementById('addInvoiceItemButton');
-    if (addItemButton) {
-        addItemButton.addEventListener('click', addInvoiceItem);
-    }
-    
-    // Save invoice button
-    const saveInvoiceButton = document.getElementById('saveInvoiceButton');
-    if (saveInvoiceButton) {
-        saveInvoiceButton.addEventListener('click', saveInvoice);
-    }
 }
 
-// Add action button listeners
+// Agregar event listeners a los botones de acción
 function addActionButtonListeners() {
-    // View buttons
+    // Botones de ver
     const viewButtons = document.querySelectorAll('.btn-view');
     viewButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -150,7 +161,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Print buttons
+    // Botones de imprimir
     const printButtons = document.querySelectorAll('.btn-print');
     printButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -159,7 +170,7 @@ function addActionButtonListeners() {
         });
     });
     
-    // Delete buttons
+    // Botones de eliminar
     const deleteButtons = document.querySelectorAll('.btn-delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -169,18 +180,18 @@ function addActionButtonListeners() {
     });
 }
 
-// Open new invoice modal
-function openNewInvoiceModal() {
-    // Reset invoice items
+// Abrir modal para nueva factura
+async function openNewInvoiceModal() {
+    // Reiniciar items de factura
     invoiceItems = [];
     
-    // Reset form
+    // Reiniciar formulario
     const form = document.getElementById('invoiceForm');
     if (form) {
         form.reset();
     }
     
-    // Clear items table
+    // Limpiar tabla de items
     const itemsTable = document.querySelector('#invoiceItemsTable tbody');
     if (itemsTable) {
         itemsTable.innerHTML = `
@@ -190,67 +201,153 @@ function openNewInvoiceModal() {
         `;
     }
     
-    // Reset totals
+    // Reiniciar totales
     updateInvoiceTotals();
     
-    // Open modal
-    openModal('invoiceModal');
+    try {
+        // Cargar clientes para el dropdown
+        const clientSelect = document.getElementById('invoiceClient');
+        if (clientSelect) {
+            clientSelect.innerHTML = '<option value="">Seleccione un cliente</option>';
+            
+            const response = await fetch(`${API_BASE_URL}/clientes`);
+            if (!response.ok) throw new Error('Error al cargar clientes');
+            const clients = await response.json();
+            
+            // Llenar dropdown de clientes
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.IdCliente;
+                option.textContent = client.Nombre;
+                clientSelect.appendChild(option);
+            });
+        }
+        
+        // Cargar productos para el dropdown
+        const productSelect = document.getElementById('invoiceProduct');
+        if (productSelect) {
+            productSelect.innerHTML = '<option value="">Seleccione un producto</option>';
+            
+            // Cargar productos desde la API
+            const productsResponse = await fetch(`${API_BASE_URL}/productos`);
+            if (!productsResponse.ok) throw new Error('Error al cargar productos');
+            const products = await productsResponse.json();
+
+            // Verificar si hay productos disponibles
+            if (products.length === 0) {
+                productSelect.innerHTML = '<option value="">No hay productos disponibles</option>';
+                showNotification('No hay productos registrados en el sistema', 'warning');
+            } else {
+                // Llenar dropdown de productos
+                products.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.IdProducto;
+                    option.textContent = product.Nombre;
+                    
+                    // Asignar precio como atributo data
+                    /*if (product.Precio) {
+                        option.dataset.price = product.Precio;
+                    } else {
+                        console.warn(`Producto ${product.IdProducto} no tiene precio definido`);
+                        option.dataset.price = '0';
+                    }*/
+                    
+                    productSelect.appendChild(option);
+                });
+            }
+            
+            // Auto-completar precio al seleccionar producto
+            productSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const priceInput = document.getElementById('invoicePrice');
+                
+                if (selectedOption && selectedOption.dataset.price) {
+                    priceInput.value = selectedOption.dataset.price;
+                    
+                    // Dar foco al campo de cantidad para facilitar la entrada de datos
+                    document.getElementById('invoiceQuantity').focus();
+                } else {
+                    priceInput.value = '';
+                }
+            });
+        }
+        
+        // Establecer fecha actual por defecto
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('invoiceDate').value = today;
+        
+        // Abrir modal
+        openModal('invoiceModal');
+    } catch (error) {
+        console.error('Error al abrir modal de factura:', error);
+        showNotification(`Error al cargar datos para nueva factura: ${error.message}`, 'error');
+    }
 }
 
-// Add invoice item
+// Agregar item a la factura
 function addInvoiceItem() {
-    // Get form data
+    // Obtener datos del formulario
     const productSelect = document.getElementById('invoiceProduct');
     const quantityInput = document.getElementById('invoiceQuantity');
     const priceInput = document.getElementById('invoicePrice');
     
     const productId = productSelect ? productSelect.value : '';
     const quantity = quantityInput ? parseInt(quantityInput.value) : 0;
-    const price = priceInput ? parseInt(priceInput.value) : 0;
+    const price = priceInput ? parseFloat(priceInput.value) : 0;
     
-    // Validate data
+    // Validar datos
     if (!productId || !quantity || !price) {
-        alert('Por favor complete todos los campos del producto');
+        showNotification('Por favor complete todos los campos del producto', 'error');
         return;
     }
     
-    // Get product name
+    if (quantity <= 0) {
+        showNotification('La cantidad debe ser mayor a cero', 'error');
+        return;
+    }
+    
+    if (price <= 0) {
+        showNotification('El precio debe ser mayor a cero', 'error');
+        return;
+    }
+    
+    // Obtener nombre del producto
     const productName = productSelect.options[productSelect.selectedIndex].text;
     
-    // Create new item
+    // Crear nuevo item
     const newItem = {
-        id: window.helpers.generateId(),
-        productId,
-        productName,
-        quantity,
-        price,
-        total: quantity * price
+        IdProducto: productId,
+        Nombre: productName,
+        Cantidad: quantity,
+        PrecioUnitario: price,
+        Total: quantity * price
     };
     
-    // Add to items
+    // Agregar a los items
     invoiceItems.push(newItem);
     
-    // Update items table
+    // Actualizar tabla de items
     updateInvoiceItemsTable();
     
-    // Update totals
+    // Actualizar totales
     updateInvoiceTotals();
     
-    // Reset product form
+    // Reiniciar formulario de producto
+    productSelect.value = '';
     quantityInput.value = '';
     priceInput.value = '';
     productSelect.focus();
 }
 
-// Update invoice items table
+// Actualizar tabla de items de la factura
 function updateInvoiceItemsTable() {
     const itemsTable = document.querySelector('#invoiceItemsTable tbody');
     if (!itemsTable) return;
     
-    // Clear table
+    // Limpiar tabla
     itemsTable.innerHTML = '';
     
-    // Add items
+    // Mostrar mensaje si no hay items
     if (invoiceItems.length === 0) {
         itemsTable.innerHTML = `
             <tr>
@@ -260,16 +357,17 @@ function updateInvoiceItemsTable() {
         return;
     }
     
-    invoiceItems.forEach((item, index) => {
+    // Llenar tabla con los items
+    invoiceItems.forEach((item) => {
         const row = document.createElement('tr');
         
         row.innerHTML = `
-            <td>${item.productName}</td>
-            <td>${item.quantity}</td>
-            <td>${window.helpers.formatCurrency(item.price)}</td>
-            <td>${window.helpers.formatCurrency(item.total)}</td>
+            <td>${item.Nombre}</td>
+            <td>${item.Cantidad}</td>
+            <td>${window.helpers.formatCurrency(item.PrecioUnitario)}</td>
+            <td>${window.helpers.formatCurrency(item.Total)}</td>
             <td>
-                <button class="btn-icon btn-delete" data-id="${item.id}">
+                <button class="btn-icon btn-delete" data-id="${item.IdProducto}">
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -278,7 +376,7 @@ function updateInvoiceItemsTable() {
         itemsTable.appendChild(row);
     });
     
-    // Add delete button listeners
+    // Agregar event listeners a los botones de eliminar
     const deleteButtons = itemsTable.querySelectorAll('.btn-delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -288,31 +386,31 @@ function updateInvoiceItemsTable() {
     });
 }
 
-// Remove invoice item
+// Eliminar item de la factura
 function removeInvoiceItem(id) {
-    // Remove item
-    invoiceItems = invoiceItems.filter(item => item.id !== id);
+    // Eliminar el item
+    invoiceItems = invoiceItems.filter(item => item.IdProducto !== id);
     
-    // Update table
+    // Actualizar tabla
     updateInvoiceItemsTable();
     
-    // Update totals
+    // Actualizar totales
     updateInvoiceTotals();
 }
 
-// Update invoice totals
+// Actualizar totales de la factura
 function updateInvoiceTotals() {
-    // Calculate subtotal
-    const subtotal = invoiceItems.reduce((sum, item) => sum + item.total, 0);
+    // Calcular subtotal
+    const subtotal = invoiceItems.reduce((sum, item) => sum + item.Total, 0);
     
-    // Calculate tax
-    const taxRate = 0.19; // 19% IVA
+    // Calcular impuesto (IVA 19%)
+    const taxRate = 0.19;
     const tax = subtotal * taxRate;
     
-    // Calculate total
+    // Calcular total
     const total = subtotal + tax;
     
-    // Update UI
+    // Actualizar UI
     const subtotalElement = document.getElementById('invoiceSubtotal');
     const taxElement = document.getElementById('invoiceTax');
     const totalElement = document.getElementById('invoiceTotal');
@@ -322,185 +420,286 @@ function updateInvoiceTotals() {
     if (totalElement) totalElement.textContent = window.helpers.formatCurrency(total);
 }
 
-// Save invoice
-function saveInvoice() {
-    // Get form data
+// Guardar factura en la base de datos
+async function saveInvoice() {
+    // Obtener datos del formulario
     const clientSelect = document.getElementById('invoiceClient');
     const dateInput = document.getElementById('invoiceDate');
     
     const clientId = clientSelect ? clientSelect.value : '';
     const date = dateInput ? dateInput.value : '';
     
-    // Validate data
+    // Validar datos
     if (!clientId || !date) {
-        alert('Por favor seleccione un cliente y una fecha');
+        showNotification('Por favor seleccione un cliente y una fecha', 'error');
         return;
     }
     
     if (invoiceItems.length === 0) {
-        alert('Por favor agregue al menos un producto');
+        showNotification('Por favor agregue al menos un producto', 'error');
         return;
     }
     
-    // Get client name
-    const clientName = clientSelect.options[clientSelect.selectedIndex].text;
-    
-    // Calculate totals
-    const subtotal = invoiceItems.reduce((sum, item) => sum + item.total, 0);
-    const taxRate = 0.19; // 19% IVA
+    // Calcular totales
+    const subtotal = invoiceItems.reduce((sum, item) => sum + item.Total, 0);
+    const taxRate = 0.19;
     const tax = subtotal * taxRate;
     const total = subtotal + tax;
     
-    // Create invoice number
-    const invoiceNumber = `F-${(window.appData.invoices.length + 1).toString().padStart(3, '0')}`;
-    
-    // Create new invoice
-    const newInvoice = {
-        numero: invoiceNumber,
-        cliente: clientName,
-        fecha: date,
-        total: total,
-        subtotal: subtotal,
-        impuesto: tax,
-        items: [...invoiceItems]
-    };
-    
-    // Add to data
-    window.appData.invoices.unshift(newInvoice);
-    
-    // Reload table
-    loadInvoicesData();
-    
-    // Close modal
-    closeModal('invoiceModal');
-    
-    // Show success message
-    showNotification('Factura creada con éxito', 'success');
-}
-
-// View invoice
-function viewInvoice(id) {
-    // Get invoice data
-    const invoice = window.appData.invoices[id];
-    
-    // Fill modal
-    const modal = document.getElementById('viewInvoiceModal');
-    if (modal) {
-        const modalContent = modal.querySelector('.modal-content');
+    try {
+        // Crear objeto con datos de la factura
+        const invoiceData = {
+            Fecha: date,
+            IdCliente: clientId,
+            Total: total,
+            Subtotal: subtotal,
+            Impuesto: tax,
+            IdUsuario: 1, // En producción esto debería ser el ID del usuario logueado
+            Detalles: invoiceItems.map(item => ({
+                IdProducto: item.IdProducto,
+                Cantidad: item.Cantidad,
+                PrecioUnitario: item.PrecioUnitario,
+                Total: item.Total
+            }))
+        };
         
-        modalContent.innerHTML = `
-            <button class="modal-close">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="invoice-view">
-                <div class="invoice-header">
-                    <div class="invoice-logo">
-                        <img src="assets/img/logo.png" alt="HENSYS Logo">
-                        <h2>HENSYS</h2>
-                    </div>
-                    <div class="invoice-info">
-                        <h1>Factura</h1>
-                        <p><strong>Número:</strong> ${invoice.numero}</p>
-                        <p><strong>Fecha:</strong> ${window.helpers.formatDate(invoice.fecha)}</p>
-                    </div>
-                </div>
-                
-                <div class="invoice-client">
-                    <h3>Cliente</h3>
-                    <p><strong>Nombre:</strong> ${invoice.cliente}</p>
-                </div>
-                
-                <div class="invoice-items">
-                    <h3>Productos</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${invoice.items ? invoice.items.map(item => `
-                                <tr>
-                                    <td>${item.productName}</td>
-                                    <td>${item.quantity}</td>
-                                    <td>${window.helpers.formatCurrency(item.price)}</td>
-                                    <td>${window.helpers.formatCurrency(item.total)}</td>
-                                </tr>
-                            `).join('') : `
-                                <tr>
-                                    <td colspan="4" class="text-center">No hay productos</td>
-                                </tr>
-                            `}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="invoice-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span>${window.helpers.formatCurrency(invoice.subtotal || 0)}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>IVA (19%):</span>
-                        <span>${window.helpers.formatCurrency(invoice.impuesto || 0)}</span>
-                    </div>
-                    <div class="total-row total-final">
-                        <span>Total:</span>
-                        <span>${window.helpers.formatCurrency(invoice.total)}</span>
-                    </div>
-                </div>
-                
-                <div class="invoice-actions">
-                    <button class="btn btn-primary" onclick="printInvoice(${id})">
-                        <i class="fas fa-print"></i> Imprimir
-                    </button>
-                </div>
-            </div>
-        `;
+        // Enviar a la API
+        const response = await fetch(`${API_BASE_URL}/facturas`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(invoiceData)
+        });
         
-        // Add close button event
-        const closeButton = modalContent.querySelector('.modal-close');
-        if (closeButton) {
-            closeButton.addEventListener('click', function() {
-                closeModal('viewInvoiceModal');
-            });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al guardar factura');
         }
-    }
-    
-    // Open modal
-    openModal('viewInvoiceModal');
-}
-
-// Print invoice
-function printInvoice(id) {
-    // In a real app, this would open a print dialog
-    alert('Funcionalidad de impresión en desarrollo');
-}
-
-// Delete invoice
-function deleteInvoice(id) {
-    if (confirm('¿Está seguro de que desea eliminar esta factura?')) {
-        // Remove from data
-        window.appData.invoices.splice(id, 1);
         
-        // Reload table
+        // Recargar tabla de facturas
         loadInvoicesData();
         
-        // Show success message
-        showNotification('Factura eliminada con éxito', 'success');
+        // Cerrar modal
+        closeModal('invoiceModal');
+        
+        // Mostrar mensaje de éxito
+        showNotification('Factura creada con éxito', 'success');
+    } catch (error) {
+        console.error('Error al guardar factura:', error);
+        showNotification(error.message || 'Error al guardar factura', 'error');
     }
 }
 
-// Export invoices
-function exportInvoices() {
-    // In a real app, this would export to CSV or PDF
-    alert('Funcionalidad de exportación en desarrollo');
+// Ver detalles de una factura
+async function viewInvoice(id) {
+    try {
+        // Obtener datos principales de la factura
+        const invoiceResponse = await fetch(`${API_BASE_URL}/facturas/${id}`);
+        if (!invoiceResponse.ok) throw new Error('Error al cargar factura');
+        const invoice = await invoiceResponse.json();
+
+        // Obtener detalles de la factura con información de productos
+        const detailsResponse = await fetch(`${API_BASE_URL}/detalle-factura/factura/${id}`);
+        if (!detailsResponse.ok) throw new Error('Error al cargar detalles de factura');
+        const detalles = await detailsResponse.json();
+
+        // Calcular subtotal para cada item y total general
+        let subtotalCalculado = 0;
+        const detallesConSubtotal = detalles.map(detalle => {
+            const subtotalItem = detalle.Cantidad * detalle.PrecioUnitario;
+            subtotalCalculado += subtotalItem;
+            return {
+                ...detalle,
+                subtotalItem: subtotalItem
+            };
+        });
+
+        // Función para obtener información completa de productos
+        const getProductDetails = async (detalles) => {
+            const detallesConProductos = [];
+            
+            for (const detalle of detalles) {
+                try {
+                    const productResponse = await fetch(`${API_BASE_URL}/productos/${detalle.IdProducto}`);
+                    if (productResponse.ok) {
+                        const producto = await productResponse.json();
+                        detallesConProductos.push({
+                            ...detalle,
+                            producto: producto
+                        });
+                    } else {
+                        detallesConProductos.push({
+                            ...detalle,
+                            producto: null
+                        });
+                    }
+                } catch (error) {
+                    console.error(`Error al cargar producto ${detalle.IdProducto}:`, error);
+                    detallesConProductos.push({
+                        ...detalle,
+                        producto: null
+                    });
+                }
+            }
+            
+            return detallesConProductos;
+        };
+
+        // Obtener información completa de cada producto
+        const detallesCompletos = await getProductDetails(detallesConSubtotal);
+
+        // Obtener información del cliente si no viene en la factura
+        let clienteInfo = invoice.cliente;
+        if (!clienteInfo && invoice.IdCliente) {
+            const clienteResponse = await fetch(`${API_BASE_URL}/clientes/${invoice.IdCliente}`);
+            if (clienteResponse.ok) {
+                clienteInfo = await clienteResponse.json();
+            }
+        }
+
+        // Llenar el modal con los datos
+        const modal = document.getElementById('viewInvoiceModal');
+        if (modal) {
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalContent.innerHTML = `
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="invoice-view">
+                    <div class="invoice-header">
+                        <div class="invoice-logo">
+                            <img src="/hensys-fronend/assets/img/gallina.png" alt="HENSYS Logo">
+                            <h2>HENSYS</h2>
+                        </div>
+                        <div class="invoice-info">
+                            <h1>Factura</h1>
+                            <p><strong>Número:</strong> F-${invoice.IdFactura.toString().padStart(3, '0')}</p>
+                            <p><strong>Fecha:</strong> ${window.helpers.formatDate(invoice.Fecha)}</p>
+                            ${invoice.Estado ? `<p><strong>Estado:</strong> ${invoice.Estado}</p>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-client">
+                        <h3>Cliente</h3>
+                        <p><strong>Nombre:</strong> ${clienteInfo ? clienteInfo.Nombre : 'Cliente no encontrado'}</p>
+                        ${clienteInfo && clienteInfo.Direccion ? `<p><strong>Dirección:</strong> ${clienteInfo.Direccion}</p>` : ''}
+                        ${clienteInfo && clienteInfo.Telefono ? `<p><strong>Teléfono:</strong> ${clienteInfo.Telefono}</p>` : ''}
+                        ${clienteInfo && clienteInfo.Email ? `<p><strong>Email:</strong> ${clienteInfo.Email}</p>` : ''}
+                    </div>
+                    
+                    <div class="invoice-items">
+                        <h3>Detalles de Factura</h3>
+                        <table class="invoice-details-table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Tipo</th>
+                                    <th>Unidad</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${detallesCompletos.length > 0 ? detallesCompletos.map(item => `
+                                    <tr>
+                                        <td>${item.producto ? item.producto.Nombre : 'Producto no encontrado'}</td>
+                                        <td>${item.producto ? item.producto.Tipo : '-'}</td>
+                                        <td>${item.producto ? item.producto.Unidad : '-'}</td>
+                                        <td>${item.Cantidad}</td>
+                                        <td>${window.helpers.formatCurrency(item.PrecioUnitario)}</td>
+                                        <td>${window.helpers.formatCurrency(item.subtotalItem)}</td>
+                                    </tr>
+                                `).join('') : `
+                                    <tr>
+                                        <td colspan="6" class="text-center">No hay productos en esta factura</td>
+                                    </tr>
+                                `}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="invoice-totals">
+                        <div class="total-row">
+                            <span>Subtotal calculado:</span>
+                            <span>${window.helpers.formatCurrency(subtotalCalculado)}</span>
+                        </div>
+                        <div class="total-row">
+                            <span>IVA (19%):</span>
+                            <span>${window.helpers.formatCurrency(subtotalCalculado * 0.19)}</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total calculado:</span>
+                            <span>${window.helpers.formatCurrency(subtotalCalculado * 1.19)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-actions">
+                        <button class="btn btn-primary" onclick="printInvoice(${invoice.IdFactura})">
+                            <i class="fas fa-print"></i> Imprimir
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeModal('viewInvoiceModal')">
+                            <i class="fas fa-times"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Agregar evento al botón de cerrar
+            const closeButton = modalContent.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', function() {
+                    closeModal('viewInvoiceModal');
+                });
+            }
+        }
+        
+        // Abrir modal
+        openModal('viewInvoiceModal');
+    } catch (error) {
+        console.error('Error al ver factura:', error);
+        showNotification(`Error al cargar detalles de la factura: ${error.message}`, 'error');
+    }
 }
 
-// Open modal
+// Imprimir factura
+function printInvoice(id) {
+    // En una aplicación real, esto abriría un diálogo de impresión
+    // Por ahora, abrimos el modal de vista primero
+    viewInvoice(id);
+    setTimeout(() => {
+        alert('Funcionalidad de impresión en desarrollo. Por ahora puede usar Ctrl+P para imprimir.');
+    }, 500);
+}
+
+// Eliminar factura
+async function deleteInvoice(id) {
+    if (confirm('¿Está seguro de que desea eliminar esta factura?')) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/facturas/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al eliminar factura');
+            }
+            
+            // Recargar tabla de facturas
+            loadInvoicesData();
+            
+            // Mostrar mensaje de éxito
+            showNotification('Factura eliminada con éxito', 'success');
+        } catch (error) {
+            console.error('Error al eliminar factura:', error);
+            showNotification(error.message || 'Error al eliminar factura', 'error');
+        }
+    }
+}
+
+// Abrir modal
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -509,7 +708,7 @@ function openModal(modalId) {
     }
 }
 
-// Close modal
+// Cerrar modal
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -518,9 +717,9 @@ function closeModal(modalId) {
     }
 }
 
-// Show notification
+// Mostrar notificación
 function showNotification(message, type = 'info') {
-    // Create notification element
+    // Crear elemento de notificación
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.innerHTML = `
@@ -533,10 +732,10 @@ function showNotification(message, type = 'info') {
         </button>
     `;
     
-    // Add to document
+    // Agregar al documento
     document.body.appendChild(notification);
     
-    // Add close button event
+    // Agregar evento al botón de cerrar
     const closeButton = notification.querySelector('.notification-close');
     if (closeButton) {
         closeButton.addEventListener('click', function() {
@@ -544,7 +743,7 @@ function showNotification(message, type = 'info') {
         });
     }
     
-    // Auto remove after 5 seconds
+    // Auto-eliminar después de 5 segundos
     setTimeout(() => {
         notification.classList.add('fade-out');
         setTimeout(() => {

@@ -18,6 +18,7 @@ const sesionUsuarioRoutes = require('./routes/sesionUsuario.routes');
 const usuarioRoutes = require('./routes/usuario.routes'); 
 const usuarioGranjaRoutes = require('./routes/usuarioGranja.routes'); 
 const vacunacionRoutes = require('./routes/vacunacion.routes');
+const productoRoutes = require('./routes/producto.routes');
 const app = express();
 
 // Middlewares
@@ -37,6 +38,7 @@ app.use('/granjas', granjaRoutes);
 app.use('/inventarios', inventarioRoutes);
 app.use('/lotes-animales', loteAnimalRoutes);
 app.use('/producciones', produccionRoutes);
+app.use('/productos', productoRoutes);
 app.use('/sesiones-usuario', sesionUsuarioRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/usuarios-granja', usuarioGranjaRoutes);

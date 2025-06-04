@@ -400,8 +400,6 @@ button {
   display: block;
 }
 
-
-
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -601,6 +599,49 @@ button {
   box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
   border: 2px solid white;
   animation: pulse 2s infinite;
+}
+
+/* Estilos para la paginación */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    padding: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination-controls .page-info {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0 0.5rem;
+}
+
+.pagination-controls button {
+    min-width: auto;
+    padding: 0.5rem 0.75rem;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .pagination-controls {
+        gap: 0.25rem;
+    }
+    
+    .pagination-controls button {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .pagination-controls .page-info {
+        font-size: 0.8rem;
+    }
 }
 
 @keyframes pulse {
@@ -883,3 +924,5 @@ button {
     padding: var(--spacing-sm);
   }
 }
+
+

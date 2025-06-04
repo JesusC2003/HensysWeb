@@ -2,7 +2,10 @@ const db = require('../services/db.service');
 
 module.exports = {
   getAll: async () => {
-    return await db.query('SELECT * FROM galpon');
+  return await db.query(`
+    SELECT g.*, gr.Nombre AS GranjaNombre 
+    FROM galpon g
+    LEFT JOIN granja gr ON g.id_Granja = gr.IdGranja`);
   },
   
   getById: async (id) => {

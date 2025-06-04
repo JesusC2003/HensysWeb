@@ -15,10 +15,10 @@ module.exports = {
   },
   
   create: async (loteData) => {
-    const { NombreLote, FechaIngreso, IdGalpon } = loteData;
+    const { NombreLote, FechaIngreso,cantidaAnimal, IdGalpon } = loteData;
     const result = await db.query(
       'INSERT INTO lote_animal SET ?', 
-      { NombreLote, FechaIngreso, IdGalpon }
+      { NombreLote, FechaIngreso,cantidaAnimal, IdGalpon }
     );
     return result.insertId;
   },
